@@ -11,8 +11,6 @@ const emit = defineEmits(["playTile"])
 
 const tileState = ref<Tile>(" ")
 
-console.log(props)
-
 const setTileState = (state: Tile) => {
   tileState.value = state
   emit("playTile", state, props.tileNumber)
