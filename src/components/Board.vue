@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import TileComponent from "@/components/Tile.vue"
-import type { Tile } from "@/types"
+import type { Tile, GameState } from "@/types"
+import { defaultGameState } from "@/defaultGameState"
+
 import { ref } from "vue"
 
 const emit = defineEmits(["gameState"])
@@ -17,37 +19,39 @@ const winningArray = [
 ]
 const startingPlayer = "X"
 
-const playingArray = ref<Tile[]>(Array(9).fill(" "))
-const currentPlayer = ref<Tile>(startingPlayer)
-const winner = ref<Tile>(" ")
+const gameState = ref<GameState>(defaultGameState)
+const winningTiles = ref<number[]>([])
 
 const setPlayingPlayer = (player: Tile, tileNumber: number) => {
-  playingArray.value = playingArray.value.map((t, index) => {
-    if (index + 1 === tileNumber && t === " ") {
-      return player
+  gameState.value.playingArray = gameState.value.playingArray.map(
+    (t, index) => {
+      if (index + 1 === tileNumber && t === " ") {
+        return player
+      }
+      return t
     }
-    return t
-  })
-  currentPlayer.value = player === "X" ? "O" : "X"
-  checkForWinner()
+  )
+  gameState.value.currentPlayer = player === "X" ? "O" : "X"
+  checkForWinner(gameState.value.playingArray, winningArray)
 }
 
-const checkForWinner = () => {
-  winningArray.forEach((i) => {
+const checkForWinner = (playingArray: Tile[], winningsArray: number[][]) => {
+  winningsArray.forEach((i) => {
     if (
-      playingArray.value[i[0] - 1] === playingArray.value[i[1] - 1] &&
-      playingArray.value[i[1] - 1] === playingArray.value[i[2] - 1] &&
-      playingArray.value[i[0] - 1] === playingArray.value[i[2] - 1]
+      playingArray[i[0] - 1] === playingArray[i[1] - 1] &&
+      playingArray[i[1] - 1] === playingArray[i[2] - 1] &&
+      playingArray[i[0] - 1] === playingArray[i[2] - 1]
     ) {
-      if (playingArray.value[i[0] - 1] !== " ") {
-        winner.value = playingArray.value[i[0] - 1]
+      if (playingArray[i[0] - 1] !== " ") {
+        gameState.value.winner = playingArray[i[0] - 1]
+        winningTiles.value = i
       }
     }
   })
   emit("gameState", {
-    playingArray: playingArray.value,
-    currentPlayer: currentPlayer.value,
-    winner: winner.value,
+    playingArray: gameState.value.playingArray,
+    currentPlayer: gameState.value.currentPlayer,
+    winner: gameState.value.winner,
   })
 }
 </script>
@@ -57,9 +61,10 @@ const checkForWinner = () => {
     <TileComponent
       v-for="index in 9"
       :key="index"
-      :current-player="currentPlayer"
+      :current-player="gameState.currentPlayer"
       :tile-number="index"
-      :winner="winner"
+      :winning-tile="winningTiles.includes(index)"
+      :winner="gameState.winner"
       @play-tile="setPlayingPlayer"
     />
   </div>

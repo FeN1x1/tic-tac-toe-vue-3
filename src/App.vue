@@ -2,27 +2,21 @@
 import Board from "./components/Board.vue"
 import Menu from "./components/Menu.vue"
 import type { GameState } from "@/types"
-import { ref } from "vue"
+import { defaultGameState } from "@/defaultGameState"
 
-const defaultState: GameState = {
-  playingArray: Array(9).fill(" "),
-  currentPlayer: "X",
-  winner: " ",
-}
-const gameState = ref<GameState>(defaultState)
+import { onMounted, ref } from "vue"
+
+const gameState = ref<GameState>(defaultGameState)
+const board = ref<null | any>(null)
 
 const setMenu = (gameStateParam: GameState) => {
   gameState.value = gameStateParam
-}
-
-const resetGame = () => {
-  gameState.value = defaultState
 }
 </script>
 
 <template>
   <div class="flex flex-col">
-    <Menu @reset-game="resetGame" :game-state="gameState" />
-    <Board @game-state="setMenu" class="mx-auto" />
+    <Menu :game-state="gameState" />
+    <Board @game-state="setMenu" class="mx-auto" ref="board" />
   </div>
 </template>

@@ -6,6 +6,7 @@ const props = defineProps<{
   currentPlayer: Tile
   tileNumber: number
   winner: Tile
+  winningTile: boolean
 }>()
 
 const emit = defineEmits(["playTile"])
@@ -26,13 +27,18 @@ const setTileState = (state: Tile) => {
   <div
     @click="setTileState(currentPlayer)"
     :class="!isDisabled ? 'cursor-pointer' : 'pointer-events-none'"
-    class="m-2 flex bg-slate-300 h-32 w-32 rounded-lg shadow-lg"
+    class="m-2"
   >
     <div
-      class="m-auto text-8xl font-extrabold"
-      :class="tileState === 'X' ? 'text-red-400' : 'text-green-400'"
+      :class="winningTile ? 'bg-slate-400' : 'bg-slate-300'"
+      class="flex h-32 w-32 rounded-lg shadow-lg"
     >
-      {{ tileState }}
+      <div
+        class="m-auto text-8xl font-extrabold"
+        :class="tileState === 'X' ? 'text-red-400' : 'text-green-400'"
+      >
+        {{ tileState }}
+      </div>
     </div>
   </div>
 </template>

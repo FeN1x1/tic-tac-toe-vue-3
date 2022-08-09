@@ -1,6 +1,11 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue"
+import App from "./App.vue"
+import mitt from "mitt"
 
-import './assets/main.css'
+import "./assets/main.css"
 
-createApp(App).mount('#app')
+const emitter = mitt()
+const app = createApp(App)
+
+app.provide("emitter", emitter)
+app.mount("#app")
