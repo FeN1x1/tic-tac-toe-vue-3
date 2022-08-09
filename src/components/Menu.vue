@@ -1,44 +1,63 @@
 <script setup lang="ts">
 import type { GameState } from "@/types"
-import { useResetGame } from "@/composables/resetGame"
+import { computed } from "vue"
 
-defineProps<{
+const props = defineProps<{
   gameState: GameState
 }>()
 
-const emit = defineEmits(["restartGame"])
+const emit = defineEmits(["resetGame"])
+
+const isPlayAvailable = computed(() => {
+  return props.gameState.playingArray.includes(" ")
+})
+
+const isNoWinner = computed(() => {
+  return props.gameState.winner === " "
+})
 </script>
 
 <template>
   <div
-    class="h-32 flex my-8 max-w-lg mx-auto w-full bg-slate-200 rounded-lg shadow-lg"
+    class="h-32 flex my-8 max-w-xl p-8 mx-auto w-full bg-slate-300 rounded-lg shadow-lg"
   >
-    <div
-      v-if="gameState.winner === ' '"
-      class="m-auto font-semibold text-3xl"
-      :class="
-        gameState.currentPlayer === 'X' ? 'text-red-700' : 'text-green-700'
-      "
-    >
-      Player {{ gameState.currentPlayer }} has turn
+    <div class="flex">
+      <button
+        @click="emit('resetGame')"
+        class="px-4 py-2 rounded-lg text-2xl font-semibold border-2 border-gray-400 hover:bg-gray-400 duration-300 my-auto"
+      >
+        Reset Game
+      </button>
     </div>
-    <div
-      v-else
-      class="font-extrabold flex flex-col m-auto text-3xl text-green-400"
-    >
-      <div>
+    <div class="flex ml-auto">
+      <div
+        v-if="isNoWinner && isPlayAvailable"
+        class="my-auto text-2xl font-semibold"
+      >
         Player
         <span
-          :class="gameState.winner === 'X' ? 'text-red-700' : 'text-green-700'"
-          >{{ gameState.winner }}
-        </span>
-        has WON! CONGRATS!
+          class="text-3xl font-extrabold"
+          :class="
+            gameState.currentPlayer === 'X' ? 'text-red-700' : 'text-green-700'
+          "
+          >{{ gameState.currentPlayer }}</span
+        >
+        has turn
       </div>
       <div
-        class="mx-auto cursor-pointer underline-offset-2 underline text-black font-semibold text-2xl mt-2"
-        @click="useResetGame(true)"
+        v-else-if="isNoWinner && !isPlayAvailable"
+        class="my-auto text-2xl font-semibold"
       >
-        Restart the game
+        Game ended in a tie
+      </div>
+      <div v-else class="my-auto text-2xl font-semibold">
+        Player
+        <span
+          class="text-3xl font-extrabold"
+          :class="gameState.winner === 'X' ? 'text-red-700' : 'text-green-700'"
+          >{{ gameState.winner }}</span
+        >
+        has Won!
       </div>
     </div>
   </div>

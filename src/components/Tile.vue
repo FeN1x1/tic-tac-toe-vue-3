@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import type { Tile } from "@/types"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 
 const props = defineProps<{
   currentPlayer: Tile
   tileNumber: number
+  winner: Tile
 }>()
 
 const emit = defineEmits(["playTile"])
 
 const tileState = ref<Tile>(" ")
+
+const isDisabled = computed(() => {
+  return tileState.value !== " " || props.winner !== " "
+})
 
 const setTileState = (state: Tile) => {
   tileState.value = state
@@ -20,8 +25,8 @@ const setTileState = (state: Tile) => {
 <template>
   <div
     @click="setTileState(currentPlayer)"
-    :class="tileState === ' ' ? '' : 'pointer-events-none'"
-    class="m-2 cursor-pointer flex bg-slate-300 h-32 w-32 rounded-lg shadow-lg"
+    :class="!isDisabled ? 'cursor-pointer' : 'pointer-events-none'"
+    class="m-2 flex bg-slate-300 h-32 w-32 rounded-lg shadow-lg"
   >
     <div
       class="m-auto text-8xl font-extrabold"

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import TileComponent from "@/components/Tile.vue"
 import type { Tile } from "@/types"
-import { useResetGame } from "@/composables/resetGame"
-import { ref, watch } from "vue"
+import { ref } from "vue"
 
 const emit = defineEmits(["gameState"])
 
@@ -21,16 +20,6 @@ const startingPlayer = "X"
 const playingArray = ref<Tile[]>(Array(9).fill(" "))
 const currentPlayer = ref<Tile>(startingPlayer)
 const winner = ref<Tile>(" ")
-const { isResetGame } = useResetGame(false)
-
-watch(isResetGame, (isResetGame) => {
-  if (isResetGame) {
-    playingArray.value = Array(9).fill(" ")
-    currentPlayer.value = startingPlayer
-    winner.value = " "
-    useResetGame(false)
-  }
-})
 
 const setPlayingPlayer = (player: Tile, tileNumber: number) => {
   playingArray.value = playingArray.value.map((t, index) => {
@@ -60,7 +49,6 @@ const checkForWinner = () => {
     currentPlayer: currentPlayer.value,
     winner: winner.value,
   })
-  console.log(isResetGame)
 }
 </script>
 
@@ -71,6 +59,7 @@ const checkForWinner = () => {
       :key="index"
       :current-player="currentPlayer"
       :tile-number="index"
+      :winner="winner"
       @play-tile="setPlayingPlayer"
     />
   </div>
