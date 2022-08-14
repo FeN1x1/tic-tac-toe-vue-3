@@ -23,9 +23,10 @@ const isNoWinner = computed(() => {
   >
     <div class="flex">
       <button
+        @click="emit('resetGame')"
         class="px-4 py-2 rounded-lg text-2xl font-semibold border-2 border-slate-400 hover:bg-slate-400 duration-300 my-auto"
       >
-        Reset Game
+        {{ isNoWinner ? "Reset game" : "Start new game" }}
       </button>
     </div>
     <div class="flex ml-auto">

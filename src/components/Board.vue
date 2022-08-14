@@ -3,9 +3,13 @@ import TileComponent from "@/components/Tile.vue"
 import type { Tile, GameState } from "@/types"
 import { defaultGameState } from "@/defaultGameState"
 
-import { ref } from "vue"
+import { ref, watch } from "vue"
 
-const emit = defineEmits(["gameState"])
+const emit = defineEmits(["gameState", "setReset"])
+
+const props = defineProps<{
+  isResetInvoked: boolean
+}>()
 
 const winningArray = [
   [1, 2, 3],
@@ -21,6 +25,7 @@ const startingPlayer = "X"
 
 const gameState = ref<GameState>(defaultGameState)
 const winningTiles = ref<number[]>([])
+const isReset = ref(false)
 
 const setPlayingPlayer = (player: Tile, tileNumber: number) => {
   gameState.value.playingArray = gameState.value.playingArray.map(
@@ -33,6 +38,14 @@ const setPlayingPlayer = (player: Tile, tileNumber: number) => {
   )
   gameState.value.currentPlayer = player === "X" ? "O" : "X"
   checkForWinner(gameState.value.playingArray, winningArray)
+}
+
+const resetGame = () => {
+  gameState.value.currentPlayer = startingPlayer
+  gameState.value.playingArray = gameState.value.playingArray.map(() => " ")
+  gameState.value.winner = " "
+  winningTiles.value = []
+  isReset.value = true
 }
 
 const checkForWinner = (playingArray: Tile[], winningsArray: number[][]) => {
@@ -54,6 +67,16 @@ const checkForWinner = (playingArray: Tile[], winningsArray: number[][]) => {
     winner: gameState.value.winner,
   })
 }
+
+watch(
+  () => props.isResetInvoked,
+  () => {
+    if (props.isResetInvoked) {
+      resetGame()
+    }
+    emit("setReset")
+  }
+)
 </script>
 
 <template>
@@ -65,7 +88,9 @@ const checkForWinner = (playingArray: Tile[], winningsArray: number[][]) => {
       :tile-number="index"
       :winning-tile="winningTiles.includes(index)"
       :winner="gameState.winner"
+      :is-reset="isReset"
       @play-tile="setPlayingPlayer"
+      @reset-state-changed="isReset = false"
     />
   </div>
 </template>
