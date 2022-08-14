@@ -46,6 +46,7 @@ const resetGame = () => {
   gameState.value.winner = " "
   winningTiles.value = []
   isReset.value = true
+  emitGameState()
 }
 
 const checkForWinner = (playingArray: Tile[], winningsArray: number[][]) => {
@@ -61,6 +62,10 @@ const checkForWinner = (playingArray: Tile[], winningsArray: number[][]) => {
       }
     }
   })
+  emitGameState()
+}
+
+const emitGameState = () => {
   emit("gameState", {
     playingArray: gameState.value.playingArray,
     currentPlayer: gameState.value.currentPlayer,

@@ -38,7 +38,7 @@ const isNoWinner = computed(() => {
         <span
           class="text-3xl font-extrabold"
           :class="
-            gameState.currentPlayer === 'X' ? 'text-red-700' : 'text-green-700'
+            gameState.currentPlayer === 'X' ? 'text-red-400' : 'text-green-400'
           "
           >{{ gameState.currentPlayer }}</span
         >
@@ -54,7 +54,7 @@ const isNoWinner = computed(() => {
         Player
         <span
           class="text-3xl font-extrabold"
-          :class="gameState.winner === 'X' ? 'text-red-700' : 'text-green-700'"
+          :class="gameState.winner === 'X' ? 'text-red-400' : 'text-green-400'"
           >{{ gameState.winner }}</span
         >
         has Won!
