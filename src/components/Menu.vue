@@ -18,13 +18,11 @@ const isNoWinner = computed(() => {
 </script>
 
 <template>
-  <div
-    class="h-32 flex my-8 max-w-xl p-8 mx-auto w-full bg-slate-300 rounded-lg shadow-lg"
-  >
+  <div class="h-32 interface-background">
     <div class="flex">
       <button
         @click="emit('resetGame')"
-        class="px-4 py-2 rounded-lg text-2xl font-semibold border-2 border-slate-400 hover:bg-slate-400 duration-300 my-auto"
+        class="primary-button"
       >
         {{ isNoWinner ? "Reset game" : "Start new game" }}
       </button>

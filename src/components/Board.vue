@@ -5,7 +5,7 @@ import { defaultGameState } from "@/defaultGameState"
 
 import { ref, watch } from "vue"
 
-const emit = defineEmits(["gameState", "setReset"])
+const emit = defineEmits(["gameState", "setReset", "moveHistory"])
 
 const props = defineProps<{
   isResetInvoked: boolean
@@ -26,6 +26,7 @@ const startingPlayer = "X"
 const gameState = ref<GameState>(defaultGameState)
 const winningTiles = ref<number[]>([])
 const isReset = ref(false)
+const moveHistory = ref<Tile[][]>([defaultGameState.playingArray])
 
 const setPlayingPlayer = (player: Tile, tileNumber: number) => {
   gameState.value.playingArray = gameState.value.playingArray.map(
@@ -37,6 +38,9 @@ const setPlayingPlayer = (player: Tile, tileNumber: number) => {
     }
   )
   gameState.value.currentPlayer = player === "X" ? "O" : "X"
+  //push the playing array to the move history
+  moveHistory.value.push(gameState.value.playingArray)
+  emitMoveHistory()
   checkForWinner(gameState.value.playingArray, winningArray)
 }
 
@@ -46,7 +50,9 @@ const resetGame = () => {
   gameState.value.winner = " "
   winningTiles.value = []
   isReset.value = true
+  moveHistory.value = [gameState.value.playingArray]
   emitGameState()
+  emitMoveHistory()
 }
 
 const checkForWinner = (playingArray: Tile[], winningsArray: number[][]) => {
@@ -71,6 +77,10 @@ const emitGameState = () => {
     currentPlayer: gameState.value.currentPlayer,
     winner: gameState.value.winner,
   })
+}
+
+const emitMoveHistory = () => {
+  emit("moveHistory", moveHistory.value)
 }
 
 watch(
