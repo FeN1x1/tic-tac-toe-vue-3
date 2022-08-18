@@ -9,7 +9,7 @@ const props = defineProps<{
 <template>
   <div class="m-2">
     <div
-      class="flex h-20 w-20 rounded-lg shadow-lg"
+      class="mx-auto rounded-lg bg-slate-300 px-4 py-2 text-xl shadow-xl"
       :class="false ? 'bg-slate-400' : 'bg-slate-300'"
     >
       <div

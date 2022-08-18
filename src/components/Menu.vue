@@ -18,23 +18,23 @@ const isNoWinner = computed(() => {
 </script>
 
 <template>
-  <div class="h-32 interface-background">
-    <div class="flex">
+  <div class="interface-background">
+    <div class="mb-6 flex">
       <button
         @click="emit('resetGame')"
-        class="primary-button"
+        class="mx-auto rounded-lg bg-slate-300 px-4 py-2 text-lg shadow-xl"
       >
         {{ isNoWinner ? "Reset game" : "Start new game" }}
       </button>
     </div>
-    <div class="flex ml-auto">
+    <div class="ml-auto flex">
       <div
         v-if="isNoWinner && isPlayAvailable"
-        class="my-auto text-2xl font-semibold"
+        class="my-auto text-lg font-semibold"
       >
         Player
         <span
-          class="text-3xl font-extrabold"
+          class="text-xl font-extrabold"
           :class="
             gameState.currentPlayer === 'X' ? 'text-red-400' : 'text-green-400'
           "
@@ -44,14 +44,14 @@ const isNoWinner = computed(() => {
       </div>
       <div
         v-else-if="isNoWinner && !isPlayAvailable"
-        class="my-auto text-2xl font-semibold"
+        class="my-auto text-lg font-semibold"
       >
         Game ended in a tie
       </div>
-      <div v-else class="my-auto text-2xl font-semibold">
+      <div v-else class="my-auto text-lg font-semibold">
         Player
         <span
-          class="text-3xl font-extrabold"
+          class="text-xl font-extrabold"
           :class="gameState.winner === 'X' ? 'text-red-400' : 'text-green-400'"
           >{{ gameState.winner }}</span
         >

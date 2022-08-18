@@ -26,7 +26,11 @@ function openModal() {
 
 <template>
   <div class="px-2">
-    <button type="button" @click="openModal" class="primary-button">
+    <button
+      type="button"
+      @click="openModal"
+      class="mx-auto rounded-lg bg-slate-300 px-4 py-2 text-xl shadow-xl"
+    >
       {{ turn }}
     </button>
 

@@ -38,14 +38,14 @@ watch(
   <div
     @click="setTileState(currentPlayer)"
     :class="!isDisabled ? 'cursor-pointer' : 'pointer-events-none'"
-    class="m-2"
+    class="m-1"
   >
     <div
-      :class="winningTile ? 'bg-slate-400' : 'bg-slate-300'"
-      class="flex h-20 w-20 rounded-lg shadow-lg"
+      :class="winningTile ? 'bg-gray-400' : 'bg-gray-300'"
+      class="flex h-16 w-16 rounded-3xl shadow-2xl"
     >
       <div
-        class="m-auto text-6xl font-extrabold"
+        class="m-auto text-4xl font-extrabold"
         :class="tileState === 'X' ? 'text-red-400' : 'text-green-400'"
       >
         {{ tileState }}

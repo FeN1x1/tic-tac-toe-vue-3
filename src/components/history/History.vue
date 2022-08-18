@@ -9,13 +9,13 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-  <div class="h-28 interface-background">
-    <div class="m-auto flex">
-      <div v-for="(move, index) in moveHistory" :key="index" class="flex">
-        <!-- <button class="primary-button">
-          {{ index + 1 }}
-        </button> -->
-
+  <div class="interface-background">
+    <div class="flex w-40 overflow-x-auto">
+      <div
+        v-for="(move, index) in moveHistory"
+        :key="index"
+        class="mx-auto flex py-4"
+      >
         <DialogHistoryBoard
           v-if="index > 1"
           :board-state="moveHistory[index - 1]"
@@ -24,7 +24,7 @@ const props = defineProps<{
       </div>
       <div
         v-if="moveHistory.length < 3"
-        class="px-2 my-auto text-2xl font-semibold"
+        class="m-auto px-4 py-2 text-lg font-semibold"
       >
         No history yet
       </div>
